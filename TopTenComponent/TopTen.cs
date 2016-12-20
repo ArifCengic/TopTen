@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using TopTen;
+using System.Text.RegularExpressions;
 
 namespace TopTenComponent
 {
 	public class TopTen : ITopTen
 	{
+        
+        //all HTML markers are constrained with <>
+        const string HTML_TAG_PATTERN = "<.*?>";
 
 		public List<String> getHtmlFromUrls(List<Uri> webSites)
 		{
@@ -31,7 +35,15 @@ namespace TopTenComponent
 			//TEst case Senad
 			// Uzeti listu htmls remove all tags
 			// if "NO_HTML" return empty string
-			return new List<String> { "Danas je lijep dan.", "text2" };
+            List<String> withoutHTMLs = new List<String> ();
+            foreach(String s in htmls)
+            {
+                   String a = Regex.Replace(s, HTML_TAG_PATTERN, string.Empty);
+                   withoutHTMLs.Add(a);
+            }
+            Console.WriteLine("Press enter to close...");
+            Console.ReadLine();
+			return withoutHTMLs;
 		}
 
 		public List<List<string>> getWordListFromTexts(List<string> texts)
