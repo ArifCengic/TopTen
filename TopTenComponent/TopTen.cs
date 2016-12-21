@@ -12,8 +12,9 @@ namespace TopTenComponent
         
         //all HTML markers are constrained with <>
         const string HTML_TAG_PATTERN = "<.*?>";
+       public List<string> blackList;
 
-		public List<String> getHtmlFromUrls(List<Uri> webSites)
+        public List<String> getHtmlFromUrls(List<Uri> webSites)
 		{
 			const string noHTML = "NO_HTML";
 
@@ -41,21 +42,46 @@ namespace TopTenComponent
                    String a = Regex.Replace(s, HTML_TAG_PATTERN, string.Empty);
                    withoutHTMLs.Add(a);
             }
-            Console.WriteLine("Press enter to close...");
-            Console.ReadLine();
+           
 			return withoutHTMLs;
 		}
 
 		public List<List<string>> getWordListFromTexts(List<string> texts)
 		{
+                      
+                //TODO Senad
+                //TestCase Denis
+                // Uzeti text pretvoriti ga u listu rijeci
+                // Kreirati metod koji ce Izbrisati rijeci krace od 3 slova
+                // Kreirati metod koji ce izbaciti rijeci koje sadrze broj
 
-			//TODO Senad
-			//TestCase Denis
-			// Uzeti text pretvoriti ga u listu rijeci
-			// Kreirati metod koji ce Izbrisati rijeci krace od 3 slova
-			// Kreirati metod koji ce izbaciti rijeci koje sadrze broj
-			return new List<List<String>> { new List<String> { "Danas", "je", "lijep", "dan" } };
+            List<List<String>> rezultat = new List<List<string>>();
+            foreach(String text in texts)
+            {
+                List<string> words = new List<string>(
+                           text.Split(new char[] { ' ', ',', '.', ':', '\t' },
+                           StringSplitOptions.RemoveEmptyEntries));
+
+                /*
+                 * foreach (String word in words)
+                {
+                    if (word.Length < 3)
+                    {
+                        words.Remove(word);
+                    }
+                }
+                */
+                words.RemoveAll(x => x.Length < 3);
+
+                rezultat.Add(words);
+            }
+
+
+
+            return rezultat;
 		}
+
+
 
 		public bool test_getWordListFromTexts()
 		{
@@ -105,6 +131,9 @@ namespace TopTenComponent
 			var results = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
 			foreach (string s in rijeci)
 			{
+
+				if (blackList.Exists(elem => elem == s))
+					continue;
 				int currentCount = 0;
 				//  TryGetValue is more performant than ContainsKey followed by item access
 				results.TryGetValue(s, out currentCount);
@@ -143,5 +172,5 @@ namespace TopTenComponent
             return new Dictionary<String, int>();
             //return top10Liste[0];
 		}
-	}
+    } 
 }
