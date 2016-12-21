@@ -62,16 +62,9 @@ namespace TopTenComponent
                            text.Split(new char[] { ' ', ',', '.', ':', '\t' },
                            StringSplitOptions.RemoveEmptyEntries));
 
-                /*
-                 * foreach (String word in words)
-                {
-                    if (word.Length < 3)
-                    {
-                        words.Remove(word);
-                    }
-                }
-                */
-                words.RemoveAll(x => x.Length < 3);
+
+                //TODO put back in
+                //words.RemoveAll(x => x.Length < 3);
 
                 rezultat.Add(words);
             }
@@ -132,7 +125,7 @@ namespace TopTenComponent
 			foreach (string s in rijeci)
 			{
 
-				if (blackList.Exists(elem => elem == s))
+				if (blackList != null && blackList.Exists(elem => elem == s))
 					continue;
 				int currentCount = 0;
 				//  TryGetValue is more performant than ContainsKey followed by item access
@@ -148,29 +141,20 @@ namespace TopTenComponent
 		}
 		public Dictionary<String, int> makeTop10s(List<Dictionary<String, int>> top10Liste)
 		{
-            // TODO Dzenita, weighted average
-            // TODO TEsttCase Adin
 
-            Dictionary<string, int> results = new Dictionary<string, int>();
+            var result = new Dictionary<String, int>();
 
-            results.Add("danas", 1);
-            results.Add("lijep", 2);
-
-            Dictionary<string, int> results1 = new Dictionary<string, int>();
-
-            results1.Add("je", 1);
-            results1.Add("lijep", 3);
-
-            foreach (var item in results)
+            foreach (var dictionary in top10Liste)
             {
-                foreach (var item1 in results1)
+                foreach (var item in dictionary)
                 {
-                    if (item.Value == item1.Value)
-                        results[item.Key] += results1[item1.Key];
+                    if (result.ContainsKey(item.Key)) result[item.Key] += item.Value;
+                    else result.Add(item.Key, item.Value);
                 }
             }
-            return new Dictionary<String, int>();
-            //return top10Liste[0];
-		}
+            return result;
+            
+
+        }
     } 
 }
