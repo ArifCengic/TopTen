@@ -20,13 +20,14 @@ namespace Test
 		public static void Main(string[] args)
 		{
 			
+
 			Console.WriteLine("Starting Test");
 
 			string testName;
-            
+
 			{
                 TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
-                tt.blackList = new List<string> { "sutra", "danas" };
+                tt.blackList= new List<string> { "sutra", "danas" };
 
                 testName = "TEST getHtmlFromUrls";
 				var result = tt.getHtmlFromUrls(new List<Uri> { new Uri("http://www.klix.ba") });
@@ -35,7 +36,10 @@ namespace Test
 			}
 
 			{
-				testName = "TEST removeHTMLs";
+                TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
+                tt.blackList = new List<string> { "sutra", "danas" };
+
+                testName = "TEST removeHTMLs";
 				var result = tt.removeHTMLs(new List<String> { "<h1> TEST </h2>" });
 
 				if (result[0].Trim() == "TEST") passed(testName);
@@ -44,7 +48,6 @@ namespace Test
 
 			{
                 TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
-                tt.blackList = new List<string> { "sutra", "danas" };
 
                 testName = "TEST getWordCounts";
 				var result = tt.getWordCounts(new List<String> { "juce", "danas", "sutra", "danas" } );
@@ -52,25 +55,42 @@ namespace Test
 				if (result["danas"] == 2) passed(testName);
 				else failed(testName);
 			}
-
-			
-				{
-                    TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
-                    tt.blackList = new List<string> { "sutra", "danas" };
-
-                    testName = "TEST getWordListFromTexts";
-					var result = tt.getWordListFromTexts(new List<String> { "juce,danas i sutra" }); ;
-
-					if (result[0].Count == 4) passed(testName);
-					else failed(testName);
-				}
-
-
-				{
+            {
                 TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
                 tt.blackList = new List<string> { "sutra", "danas" };
 
-                testName = "TEST getWordListFromTexts";
+                testName = "TEST getWordCounts";
+                var result = tt.getWordCounts(new List<String> { "juce", "danas", "sutra", "danas" });
+
+                if (result["danas"] == 0) passed(testName);
+                else failed(testName);
+            }
+
+            {
+				{
+                    TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
+
+                    testName = "TEST getWordListFromTexts";
+					var result = tt.getWordListFromTexts(new List<String> { "juce, danas i sutra" }); ;
+
+					if (result[0].Count == 3) passed(testName);
+					else failed(testName);
+				}
+
+                {
+                    TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
+                    tt.blackList= new List < string > { "sutra", "danas" };
+                    testName = "TEST getWordListFromTexts";
+                    var result = tt.getWordListFromTexts(new List<String> { "juce, danas i sutra" }); ;
+
+                    if (result[0].Count == 2) passed(testName);
+                    else failed(testName);
+                }
+
+
+                {
+                    TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
+                    testName = "TEST getWordListFromTexts";
 					Dictionary<string, int> d1 = new Dictionary<string, int>();
 					d1.Add("danas", 2);
 					d1.Add("sutra", 1);
@@ -82,7 +102,7 @@ namespace Test
 					var result = tt.makeTop10s(new List<Dictionary<string, int>>
 						{ d1, d2 });
 
-					if (result["danas"] == 7) passed(testName);
+					if (result["danas"] == 6) passed(testName);
 					else failed(testName);
 				}
 
@@ -92,4 +112,4 @@ namespace Test
 
 		}
 	}
-
+}

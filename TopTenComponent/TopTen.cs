@@ -12,9 +12,7 @@ namespace TopTenComponent
         
         //all HTML markers are constrained with <>
         const string HTML_TAG_PATTERN = "<.*?>";
-        public List<string> blackList;
-        public List<char> delimiters = new List<char> { ' ',',','.'};
-
+       public List<string> blackList;
 
         public List<String> getHtmlFromUrls(List<Uri> webSites)
 		{
@@ -44,20 +42,42 @@ namespace TopTenComponent
                    String a = Regex.Replace(s, HTML_TAG_PATTERN, string.Empty);
                    withoutHTMLs.Add(a);
             }
-        
+           
 			return withoutHTMLs;
 		}
 
 		public List<List<string>> getWordListFromTexts(List<string> texts)
 		{
+                      
+                //TODO Senad
+                //TestCase Denis
+                // Uzeti text pretvoriti ga u listu rijeci
+                // Kreirati metod koji ce Izbrisati rijeci krace od 3 slova
+                // Kreirati metod koji ce izbaciti rijeci koje sadrze broj
 
-			//TODO Senad
-			//TestCase Denis
-			// Uzeti text pretvoriti ga u listu rijeci
-			// Kreirati metod koji ce Izbrisati rijeci krace od 3 slova
-			// Kreirati metod koji ce izbaciti rijeci koje sadrze broj
-			return new List<List<String>> { new List<String> { "Danas", "je", "lijep", "dan" } };
+            List<List<String>> rezultat = new List<List<string>>();
+            foreach(String text in texts)
+            {
+                List<string> words = new List<string>(
+                           text.Split(new char[] { ' ', ',', '.', ':', '\t' },
+                           StringSplitOptions.RemoveEmptyEntries));
+                foreach (String word in words)
+                {
+                    if (word.Length < 3)
+                    {
+                        words.Remove(word);
+                    } 
+                }
+
+                rezultat.Add(words);
+            }
+
+
+
+            return rezultat;
 		}
+
+
 
 		public bool test_getWordListFromTexts()
 		{
@@ -120,10 +140,11 @@ namespace TopTenComponent
 			return results;
 		}
 		public Dictionary<String, int> makeTop10s(List<Dictionary<String, int>> top10Liste)
-		{
+		{Console.WriteLine("Press enter to close...");
+     Console.ReadLine();
 			// TODO Dzenita, weighted average
 			// TODO TEsttCase Adin
 			return top10Liste[0];
 		}
-	}
+    } 
 }
