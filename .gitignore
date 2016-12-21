@@ -273,3 +273,6 @@ __pycache__/
 
 # Cake - Uncomment if you are using it
 # tools/
+/UnitTestTopTen/Class1.cs
+/UnitTestTopTen/UnitTestTopTen.csproj
+/UnitTestTopTen

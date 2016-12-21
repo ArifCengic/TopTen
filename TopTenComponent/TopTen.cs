@@ -119,9 +119,29 @@ namespace TopTenComponent
 		}
 		public Dictionary<String, int> makeTop10s(List<Dictionary<String, int>> top10Liste)
 		{
-			// TODO Dzenita, weighted average
-			// TODO TEsttCase Adin
-			return top10Liste[0];
+            // TODO Dzenita, weighted average
+            // TODO TEsttCase Adin
+
+            Dictionary<string, int> results = new Dictionary<string, int>();
+
+            results.Add("danas", 1);
+            results.Add("lijep", 2);
+
+            Dictionary<string, int> results1 = new Dictionary<string, int>();
+
+            results1.Add("je", 1);
+            results1.Add("lijep", 3);
+
+            foreach (var item in results)
+            {
+                foreach (var item1 in results1)
+                {
+                    if (item.Value == item1.Value)
+                        results[item.Key] += results1[item1.Key];
+                }
+            }
+            return new Dictionary<String, int>();
+            //return top10Liste[0];
 		}
 	}
 }
