@@ -49,7 +49,7 @@ namespace Test
 			{
                 TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
 
-                testName = "TEST getWordCounts";
+                testName = "TEST getWordCounts1";
 				var result = tt.getWordCounts(new List<String> { "juce", "danas", "sutra", "danas" } );
 
 				if (result["danas"] == 2) passed(testName);
@@ -59,10 +59,10 @@ namespace Test
                 TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
                 tt.blackList = new List<string> { "sutra", "danas" };
 
-                testName = "TEST getWordCounts";
+                testName = "TEST getWordCounts2";
                 var result = tt.getWordCounts(new List<String> { "juce", "danas", "sutra", "danas" });
 
-                if (result["danas"] == 0) passed(testName);
+                if (!result.ContainsKey("danas")) passed(testName);
                 else failed(testName);
             }
 
@@ -79,18 +79,18 @@ namespace Test
 
                 {
                     TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
-                    tt.blackList= new List < string > { "sutra", "danas" };
-                    testName = "TEST getWordListFromTexts";
+                    //tt.blackList= new List < string > { "sutra", "danas" };
+                    testName = "TEST getWordListFromTexts2";
                     var result = tt.getWordListFromTexts(new List<String> { "juce, danas i sutra" }); ;
 
-                    if (result[0].Count == 2) passed(testName);
+                    if (result[0].Count == 3) passed(testName);
                     else failed(testName);
                 }
 
 
                 {
                     TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
-                    testName = "TEST getWordListFromTexts";
+                    testName = "TEST makeTop10s";
 					Dictionary<string, int> d1 = new Dictionary<string, int>();
 					d1.Add("danas", 2);
 					d1.Add("sutra", 1);
@@ -102,12 +102,13 @@ namespace Test
 					var result = tt.makeTop10s(new List<Dictionary<string, int>>
 						{ d1, d2 });
 
-					if (result["danas"] == 6) passed(testName);
+					if (result["danas"] == 7) passed(testName);
 					else failed(testName);
 				}
+                Console.Read();
 
 
-			}
+            }
 
 
 		}

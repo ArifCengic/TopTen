@@ -61,13 +61,17 @@ namespace TopTenComponent
                 List<string> words = new List<string>(
                            text.Split(new char[] { ' ', ',', '.', ':', '\t' },
                            StringSplitOptions.RemoveEmptyEntries));
-                foreach (String word in words)
+
+                /*
+                 * foreach (String word in words)
                 {
                     if (word.Length < 3)
                     {
                         words.Remove(word);
-                    } 
+                    }
                 }
+                */
+                words.RemoveAll(x => x.Length < 3);
 
                 rezultat.Add(words);
             }
@@ -140,8 +144,7 @@ namespace TopTenComponent
 			return results;
 		}
 		public Dictionary<String, int> makeTop10s(List<Dictionary<String, int>> top10Liste)
-		{Console.WriteLine("Press enter to close...");
-     Console.ReadLine();
+		{
 			// TODO Dzenita, weighted average
 			// TODO TEsttCase Adin
 			return top10Liste[0];
