@@ -12,8 +12,11 @@ namespace TopTenComponent
         
         //all HTML markers are constrained with <>
         const string HTML_TAG_PATTERN = "<.*?>";
+        public List<string> blackList;
+        public List<char> delimiters = new List<char> { ' ',',','.'};
 
-		public List<String> getHtmlFromUrls(List<Uri> webSites)
+
+        public List<String> getHtmlFromUrls(List<Uri> webSites)
 		{
 			const string noHTML = "NO_HTML";
 
@@ -41,8 +44,7 @@ namespace TopTenComponent
                    String a = Regex.Replace(s, HTML_TAG_PATTERN, string.Empty);
                    withoutHTMLs.Add(a);
             }
-            Console.WriteLine("Press enter to close...");
-            Console.ReadLine();
+        
 			return withoutHTMLs;
 		}
 
