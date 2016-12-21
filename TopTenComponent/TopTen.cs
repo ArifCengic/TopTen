@@ -131,6 +131,9 @@ namespace TopTenComponent
 			var results = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
 			foreach (string s in rijeci)
 			{
+
+				if (blackList.Exists(elem => elem == s))
+					continue;
 				int currentCount = 0;
 				//  TryGetValue is more performant than ContainsKey followed by item access
 				results.TryGetValue(s, out currentCount);

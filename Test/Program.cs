@@ -48,6 +48,7 @@ namespace Test
 
 			{
                 TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
+				tt.blackList = new List<string> { };
 
                 testName = "TEST getWordCounts1";
 				var result = tt.getWordCounts(new List<String> { "juce", "danas", "sutra", "danas" } );
