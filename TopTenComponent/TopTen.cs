@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using TopTen;
 using System.Text.RegularExpressions;
+using System.Text;
 
 namespace TopTenComponent
 {
@@ -23,6 +24,7 @@ namespace TopTenComponent
 			foreach (Uri webURI in webSites)
 			{
 				WebClient wc = new WebClient();
+                wc.Encoding = Encoding.UTF8;
 				string html = wc.DownloadString(webURI);
 				htmlList.Add(html);
 			}
