@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -37,6 +37,10 @@
     <Compile Include="ITopTen.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TopTenApp\TopTenApp.csproj">
+      <Project>{cdec27e3-8c61-4d27-887a-9f3531ea6415}</Project>
+      <Name>TopTenApp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TopTenComponent\TopTenComponent.csproj">
       <Project>{8AD1E666-99EB-4BE4-9CFE-0C26BDA22194}</Project>
       <Name>TopTenComponent</Name>

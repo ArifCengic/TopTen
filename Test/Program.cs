@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 
 
+
 namespace Test
 {
-	class MainClass
+	public class MainClass
 	{
 		static void passed(string testName)
 		{
@@ -20,6 +21,7 @@ namespace Test
 		public static void Main(string[] args)
 		{
 			TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
+           
 
 			Console.WriteLine("Starting Test");
 
@@ -73,6 +75,47 @@ namespace Test
 					if (result["danas"] == 7) passed(testName);
 					else failed(testName);
 				}
+
+            // test Url without scheme
+                {
+                    testName = "TEST URLsWithoutScheme";
+                    bool ok= false;
+                    
+                    
+                    try
+                    {
+                        string[] test_urls = new string[] { "www.klix.ba", "www.radiosarajevo.ba" };
+                        TopTenApp.MainClass ttApp = new TopTenApp.MainClass();
+                        TopTenApp.MainClass.Main(test_urls);
+                        ok=true;
+                 
+                    }
+                    catch(Exception e)
+                    {
+                        ok=false;
+                    }
+                    if (ok == true) passed(testName);
+                    else failed(testName);
+                }
+                // test Url without scheme - fail
+                {
+                    testName = "TEST URLsWithoutScheme";
+                    bool ok = false;
+                    try
+                    {
+                        string[] test_urls = new string[] { "https://www.klix.ba", "ww.radiosarajevo.ba" };
+                        TopTenApp.MainClass ttApp = new TopTenApp.MainClass();
+                        TopTenApp.MainClass.Main(test_urls);
+                        ok = true;
+                    }
+                    catch
+                    {
+                        ok = false;
+                    }
+                    if (ok == true) passed(testName);
+                    else failed(testName);
+                }
+                Console.ReadLine();
 		}
 	}
 }

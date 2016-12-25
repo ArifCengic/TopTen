@@ -4,7 +4,7 @@ using System.Net;
 
 namespace TopTenApp
 {
-	class MainClass
+	public class MainClass
 	{
 		public static void Main(string[] args)
 		{
@@ -17,8 +17,16 @@ namespace TopTenApp
                 {
                     try
                     {
-                        Uri u = new Uri(args[i]);
-                        listUri.Add(u);
+                        string url = args[i];
+                        if (!url.StartsWith("http://", StringComparison.OrdinalIgnoreCase)) url = "http://" + url;
+                        Uri uri;
+                       
+                        if (Uri.TryCreate(url, UriKind.Absolute, out uri) || Uri.TryCreate("http://" + url, UriKind.Absolute, out uri))
+                            {
+                                listUri.Add(uri);
+                            }
+                 
+                        
                     }
                     catch (UriFormatException e)
                     {
@@ -54,6 +62,7 @@ namespace TopTenApp
             {
                 // No internet connection
                 Console.WriteLine(e.Message + " Error ");
+                throw e;
               
             }
             catch (Exception e)
@@ -66,6 +75,7 @@ namespace TopTenApp
                 //Finally is executed ALWAYS
                 //Greaat place to do clean up work
                 Console.WriteLine("Application Closing");
+                
             }
 
 
