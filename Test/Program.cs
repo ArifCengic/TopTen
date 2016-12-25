@@ -34,6 +34,32 @@ namespace Test
 				else failed(testName);
 			}
 
+            {
+                testName = "TEST getHtmlFromUrls 1";
+        
+
+               // Create new Test Case for getHtmlFromUrls when invalid Uri is passed 
+               // when getHtmlFromUrls( new List {new Uri( " bad_uri "} ) is call with bad Url strings it should throw InvalidUriFormat exception
+                try
+                {
+                    var result = tt.getHtmlFromUrls(new List<Uri> { new Uri("www.klix.ba") });
+                    if (result[0].Length > 1000) passed(testName);
+                    else failed(testName);
+                  
+                }
+                catch (Exception e)
+                {
+                    
+                    Console.WriteLine("Exception was thrown: " + e.Message);
+                    failed(testName);
+
+                }
+               
+               
+            }
+          
+
+
 			{
 				testName = "TEST removeHTMLs";
 				var result = tt.removeHTMLs(new List<String> { "<h1> TEST </h2>" });
@@ -80,8 +106,7 @@ namespace Test
                 {
                     testName = "TEST URLsWithoutScheme";
                     bool ok= false;
-                    
-                    
+                            
                     try
                     {
                         string[] test_urls = new string[] { "www.klix.ba", "www.radiosarajevo.ba" };
@@ -97,6 +122,8 @@ namespace Test
                     if (ok == true) passed(testName);
                     else failed(testName);
                 }
+
+
                 // test Url without scheme - fail
                 {
                     testName = "TEST URLsWithoutScheme";

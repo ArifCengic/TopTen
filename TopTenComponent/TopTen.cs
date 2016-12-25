@@ -5,6 +5,7 @@ using System.Net;
 using TopTen;
 using System.Text.RegularExpressions;
 
+
 namespace TopTenComponent
 {
     public class TopTen : ITopTen
@@ -26,9 +27,17 @@ namespace TopTenComponent
 
             foreach (Uri webURI in webSites)
             {
-                WebClient wc = new WebClient();
-                string html = wc.DownloadString(webURI);
-                htmlList.Add(html);
+                try
+                {
+                    WebClient wc = new WebClient();
+                    string html = wc.DownloadString(webURI);
+                    if(String.IsNullOrEmpty(html)) htmlList.Add(noHTML);
+                    else htmlList.Add(html);
+                }
+                catch (Exception e)
+                {
+                    throw new System.UriFormatException("InvalidUriFormat :" + e.Message);
+                }
             }
             return htmlList;
         }
