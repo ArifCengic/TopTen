@@ -43,15 +43,16 @@ namespace Test
                 try
                 {
                     var result = tt.getHtmlFromUrls(new List<Uri> { new Uri("www.klix.ba") });
-                    if (result[0].Length > 1000) passed(testName);
-                    else failed(testName);
+                    //no exception was thrown
+                    failed(testName);
                   
                 }
                 catch (Exception e)
                 {
                     
-                    Console.WriteLine("Exception was thrown: " + e.Message);
-                    failed(testName);
+                    //Console.WriteLine("Exception was thrown: " + e.Message);
+                    //exception was thrown - test is successfull
+                    passed(testName);
 
                 }
                
@@ -126,7 +127,7 @@ namespace Test
 
                 // test Url without scheme - fail
                 {
-                    testName = "TEST URLsWithoutScheme";
+                    testName = "TEST URLsWithoutScheme 1";
                     bool ok = false;
                     try
                     {
