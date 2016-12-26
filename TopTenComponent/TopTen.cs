@@ -165,8 +165,17 @@ namespace TopTenComponent
                     else result.Add(item.Key, item.Value);
                 }
             }
-            return result;
-            
+
+           Dictionary<String, int> resultNew = new Dictionary<String, int>();
+
+           foreach (KeyValuePair<String, int> pair in result.OrderByDescending(key => key.Value))
+            {
+                resultNew.Add(pair.Key, pair.Value);
+            }
+
+            return resultNew;
+           
+
 
         }
     } 
