@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.IO;
+using System.Xml;
+using System.Runtime.Serialization;
+using System.Linq;
 
 namespace TopTenApp
 {
@@ -9,6 +13,7 @@ namespace TopTenApp
 		public static void Main(string[] args)
 		{
 			Console.WriteLine("Application  Started");
+			var logResults = LoadTopTen();
             try
             {
                 var listUri = new List<Uri>();
@@ -52,6 +57,8 @@ namespace TopTenApp
                 {
                     if (item.Value > 10) Console.WriteLine("Word {0} appears {1} times", item.Key, item.Value);
                 }
+
+				SaveTopTen(res5);
             }
             catch (NullReferenceException e)
             {
@@ -80,6 +87,65 @@ namespace TopTenApp
 
 
             Console.ReadLine();
+		}
+
+		private static void SaveTopTen(Dictionary<string, int> histogram)
+		{
+			Dictionary<string, int> outputVals = new Dictionary<string, int>();
+			int maxCount = 10;
+			if (histogram.Count < maxCount)
+			{
+				maxCount = histogram.Count;
+			}
+			int count = 1;
+			foreach (KeyValuePair<string, int> kvp in histogram)
+			{
+				outputVals.Add(kvp.Key, kvp.Value);
+				count++;
+				if (count > maxCount)
+				{
+					break;
+				}
+			}
+
+            DateTime currentDT = DateTime.Now;
+			string currentDTString = currentDT.ToString("yyyyMMdd_HHmmss") + ".xml";
+			string histogramFileName = "TopTen" + currentDTString;
+			XmlWriterSettings settings = new XmlWriterSettings();
+			settings.Indent = true;
+			XmlWriter writer = XmlWriter.Create(histogramFileName, settings);
+			DataContractSerializer serializer = new DataContractSerializer(typeof(Dictionary<string, int>));
+			serializer.WriteObject(writer, outputVals);
+			writer.Close();
+		}
+
+		private static Dictionary<string, int> LoadTopTen()
+		{
+			string searchPattern = "TopTen*.xml";  // This would be for you to construct your prefix
+
+			string path = Directory.GetCurrentDirectory();
+			DirectoryInfo di = new DirectoryInfo(path);
+			FileInfo[] files = di.GetFiles(searchPattern);
+			Dictionary<string, int> inputVals;
+
+			foreach (var file in files)
+			{
+				Console.WriteLine("Log data from " + file.Name);
+				XmlReader reader = XmlReader.Create(file.FullName);
+                DataContractSerializer serializer = new DataContractSerializer(typeof(Dictionary<string, int>));
+				inputVals = (Dictionary<string, int>)serializer.ReadObject(reader);
+
+				foreach (KeyValuePair<string, int> kvp in inputVals)
+				{
+					Console.Write(kvp.Key + ":" + kvp.Value + " | ");
+				}
+				Console.WriteLine("");
+                reader.Close();
+			}
+			Console.WriteLine("Those were historical data. Please press any key to continue the applicaiton");
+			Console.ReadKey();
+
+			return new Dictionary<string, int>();
 		}
 	}
 }
