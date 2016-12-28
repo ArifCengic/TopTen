@@ -13,10 +13,11 @@ namespace TopTenComponent
 
         //all HTML markers are constrained with <>
         const string HTML_TAG_PATTERN = "<.*?>";
+        const int minlen = 3;
         public List<string> blackList = new List<string>(new string[]{"a", "o", "i", "u", "ako", "zbog",
         "ja", "mi", "moj", "naš", "ovaj", "ovakav", "ko", "koji", "neko", "nekakav", "niko", "ničiji",
             "svako","od", "do", "k", "uz",  "ili", "jer", "ali", "ili", "te", });
-        public char[] delimiters = new char[] { ' ', ',', '.', ':', '\t' };
+        public char[] delimiters = new char[] { ' ', ',', '.', ':', '\t', '\\', '=', '/', '\r', '\n', '{', '}', '[', ']' };
 
 
         public List<String> getHtmlFromUrls(List<Uri> webSites)
@@ -77,7 +78,17 @@ namespace TopTenComponent
 
 
                 //TODO put back in
-                //words.RemoveAll(x => x.Length < 3);
+                words.RemoveAll(x => x.Length < minlen);
+                words.RemoveAll(x => x.StartsWith("google"));
+                words.RemoveAll(x => x.StartsWith("var"));
+                words.RemoveAll(x => x.StartsWith("this"));
+                words.RemoveAll(x => x.StartsWith("func"));
+                words.RemoveAll(x => x.StartsWith("min"));
+                words.RemoveAll(x => x.StartsWith("win"));
+                words.RemoveAll(x => x.StartsWith("exp"));
+                words.RemoveAll(x => x.StartsWith("doc"));
+                words.RemoveAll(x => x.StartsWith("perf"));
+               
 
                 rezultat.Add(words);
             }
