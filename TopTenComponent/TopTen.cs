@@ -18,7 +18,12 @@ namespace TopTenComponent
         "ja", "mi", "moj", "naš", "ovaj", "ovakav", "ko", "koji", "neko", "nekakav", "niko", "ničiji",
             "svako","od", "do", "k", "uz",  "ili", "jer", "ali", "ili", "te", });
         public char[] delimiters = new char[] { ' ', ',', '.', ':', '\t', '\\', '=', '/', '\r', '\n', '{', '}', '[', ']' };
+        public bool NamesOnly = false;
 
+        public Func<string, bool> HtmlDownloaded;
+
+        public delegate bool HtmlRemoved(string msg);
+        public event HtmlRemoved HtmlRemovedEvent;
 
         public List<String> getHtmlFromUrls(List<Uri> webSites)
         {
@@ -40,14 +45,12 @@ namespace TopTenComponent
                     throw new System.UriFormatException("InvalidUriFormat :" + e.Message);
                 }
             }
+            if (HtmlDownloaded != null) HtmlDownloaded("Downloaded some web sites");
             return htmlList;
         }
 
         public List<String> removeHTMLs(List<string> htmls)
         {
-
-            //TODO Sinisa
-            //TEst case Senad
             // Uzeti listu htmls remove all tags
             // if "NO_HTML" return empty string
             List<String> withoutHTMLs = new List<String>();
@@ -57,6 +60,7 @@ namespace TopTenComponent
                 withoutHTMLs.Add(a);
             }
 
+            if (HtmlRemovedEvent != null) HtmlRemovedEvent(String.Format("All HTML tags removed. {0} script tags removed", 7));
             return withoutHTMLs;
         }
 

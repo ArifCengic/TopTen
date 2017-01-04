@@ -10,10 +10,15 @@ namespace TopTenApp
 {
 	public class MainClass
 	{
-		public static void Main(string[] args)
+        public static bool ShowMessage(string msg)
+        {
+            Console.WriteLine(msg);
+            return true;
+        }
+        public static void Main(string[] args)
 		{
 			Console.WriteLine("Application  Started");
-			var logResults = LoadTopTen();
+			//var logResults = LoadTopTen();
             try
             {
                 var listUri = new List<Uri>();
@@ -42,7 +47,8 @@ namespace TopTenApp
                 if (listUri.Count == 0) throw new Exception("No valid web urls. Check your command line params");
 
                 TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
-
+                tt.HtmlDownloaded = ShowMessage;
+                tt.HtmlRemovedEvent += ShowMessage;
                 var res1 = tt.getHtmlFromUrls(listUri);
                 var res2 = tt.removeHTMLs(res1);
                 var res3 = tt.getWordListFromTexts(res2);
@@ -89,7 +95,13 @@ namespace TopTenApp
             Console.ReadLine();
 		}
 
-		private static void SaveTopTen(Dictionary<string, int> histogram)
+        /****
+        private static bool ShowMessage(string msg)
+        {
+            throw new NotImplementedException();
+        }
+        ****/
+        private static void SaveTopTen(Dictionary<string, int> histogram)
 		{
 			Dictionary<string, int> outputVals = new Dictionary<string, int>();
 			int maxCount = 10;
