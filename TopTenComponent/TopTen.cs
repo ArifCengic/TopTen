@@ -158,9 +158,22 @@ namespace TopTenComponent
 			foreach (string s in rijeci)
 			{
 
-				if (blackList != null && blackList.Exists(elem => elem == s))
-					continue;
-				int currentCount = 0;
+                if (blackList != null && blackList.Exists(elem => elem == s))
+                {
+                    continue;
+                }
+
+                if ( string.IsNullOrEmpty(s) )
+                {
+                    continue;
+                }
+
+                if (!char.IsUpper(s[0]))
+                {
+                    continue;
+                }
+
+                int currentCount = 0;
 				//  TryGetValue is more performant than ContainsKey followed by item access
 				results.TryGetValue(s, out currentCount);
 				currentCount++;
@@ -170,7 +183,7 @@ namespace TopTenComponent
             //TODO Denis
             //TODO TestCases DZenita
             // return new Dictionary<String, int> { { "Danas", 2 }, { "dan", 1 } };
-            if (WordCountsCalculated != null) WordCountsCalculated("Word Countrs were calculated.");
+            if (WordCountsCalculated != null) WordCountsCalculated("Word Counts were calculated.");
 			return results;
 		}
 		public Dictionary<String, int> makeTop10s(List<Dictionary<String, int>> top10Liste)
