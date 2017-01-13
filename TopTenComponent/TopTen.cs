@@ -25,6 +25,11 @@ namespace TopTenComponent
         public delegate bool HtmlRemoved(string msg);
         public event HtmlRemoved HtmlRemovedEvent;
 
+        public Func<string, bool> WordListCreated;
+        public Func<string, bool> WordCountsCalculated;
+        public delegate bool TopTenMade(string msg);
+        public event TopTenMade TopTenMadeEvent;
+
         public List<String> getHtmlFromUrls(List<Uri> webSites)
         {
             const string noHTML = "NO_HTML";
@@ -98,7 +103,7 @@ namespace TopTenComponent
             }
 
 
-
+            if (WordListCreated != null) WordListCreated("Word List Created");
             return rezultat;
 		}
 
@@ -162,9 +167,10 @@ namespace TopTenComponent
 				results[s] = currentCount;
 			}
 
-			//TODO Denis
-			//TODO TestCases DZenita
-			// return new Dictionary<String, int> { { "Danas", 2 }, { "dan", 1 } };
+            //TODO Denis
+            //TODO TestCases DZenita
+            // return new Dictionary<String, int> { { "Danas", 2 }, { "dan", 1 } };
+            if (WordCountsCalculated != null) WordCountsCalculated("Word Countrs were calculated.");
 			return results;
 		}
 		public Dictionary<String, int> makeTop10s(List<Dictionary<String, int>> top10Liste)
@@ -188,6 +194,7 @@ namespace TopTenComponent
                 resultNew.Add(pair.Key, pair.Value);
             }
 
+            if (TopTenMadeEvent != null) TopTenMadeEvent("Top Ten Lists created!");
             return resultNew;
            
 

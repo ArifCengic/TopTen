@@ -49,6 +49,10 @@ namespace TopTenApp
                 TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
                 tt.HtmlDownloaded = ShowMessage;
                 tt.HtmlRemovedEvent += ShowMessage;
+                tt.WordListCreated = ShowMessage;
+                tt.WordCountsCalculated = ShowMessage;
+                tt.TopTenMadeEvent += ShowMessage;
+
                 var res1 = tt.getHtmlFromUrls(listUri);
                 var res2 = tt.removeHTMLs(res1);
                 var res3 = tt.getWordListFromTexts(res2);
