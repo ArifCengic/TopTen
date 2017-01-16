@@ -59,6 +59,7 @@ namespace TopTenApp
                 tt.WordCountsCalculated = ShowMessage;
                 tt.WordCountsCalculated2 = ShowMessageWithLong;
                 tt.TopTenMadeEvent += ShowMessage;
+				tt.TopTenMadeEvent2 += ShowMessageWithLong;
 
                 var res1 = tt.getHtmlFromUrls(listUri);
                 var res2 = tt.removeHTMLs(res1);

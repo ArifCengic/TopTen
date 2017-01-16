@@ -25,12 +25,18 @@ namespace TopTenComponent
 
         public delegate bool HtmlRemoved(string msg);
         public event HtmlRemoved HtmlRemovedEvent;
-
         public Func<string, bool> WordListCreated;
         public Func<string, bool> WordCountsCalculated;
-        public Func<string, long, bool> WordCountsCalculated2;
         public delegate bool TopTenMade(string msg);
         public event TopTenMade TopTenMadeEvent;
+
+		public delegate bool HtmlRemoved2(string msg, long val);
+		public event HtmlRemoved2 HtmlRemovedEvent2;
+		public Func<string, long, bool> WordListCreated2;
+		public Func<string, long, bool> WordCountsCalculated2;
+		public delegate bool TopTenMade2(string msg, long val);
+        public event TopTenMade2 TopTenMadeEvent2;
+
 
 		public enum WatchUnit
 		{
@@ -123,6 +129,8 @@ namespace TopTenComponent
             List<List<String>> rezultat = new List<List<string>>();
             foreach (String text in texts)
             {
+				methodWatch = StartMethodWatch();
+
                 List<string> words = new List<string>(
                            text.Split(delimiters,
                            StringSplitOptions.RemoveEmptyEntries));
@@ -142,6 +150,10 @@ namespace TopTenComponent
                
 
                 rezultat.Add(words);
+
+				var elapsed = StopMethodWatch(methodWatch, methodWatchUnit);
+				var message = String.Format("Words extracted from text in {0} {1}", elapsed, methodWatchUnit);
+				if (WordListCreated != null) WordListCreated(message);
             }
 
 
@@ -179,7 +191,7 @@ namespace TopTenComponent
 
 		public Dictionary<string, int> getWordCounts(List<string> rijeci)
 		{
-            var watch = System.Diagnostics.Stopwatch.StartNew();
+			methodWatch = StartMethodWatch();
 
             /*
 			 * v1 code
@@ -224,18 +236,18 @@ namespace TopTenComponent
 				results[s] = currentCount;
 			}
 
-            //TODO Denis
-            //TODO TestCases DZenita
-            // return new Dictionary<String, int> { { "Danas", 2 }, { "dan", 1 } };
-            watch.Stop();
-			var elapsedMs = watch.ElapsedMilliseconds;
-            if (WordCountsCalculated != null) WordCountsCalculated(String.Format("Word Counts were calculated in {0} milliseconds.", elapsedMs));
-            if (WordCountsCalculated2 != null) WordCountsCalculated2("Word Counts were calculated.", elapsedMs);
+			//TODO Denis
+			//TODO TestCases DZenita
+			// return new Dictionary<String, int> { { "Danas", 2 }, { "dan", 1 } };
+			var elapsed = StopMethodWatch(methodWatch, methodWatchUnit);
+			if (WordCountsCalculated != null) WordCountsCalculated(String.Format("Word Counts were calculated in {0} {1}.", elapsed, methodWatchUnit));
+            if (WordCountsCalculated2 != null) WordCountsCalculated2("Word Counts were calculated.", elapsed);
 			return results;
 		}
 
 		public Dictionary<String, int> makeTop10s(List<Dictionary<String, int>> top10Liste)
 		{
+			methodWatch = StartMethodWatch();
 
             var result = new Dictionary<String, int>();
 
@@ -255,7 +267,10 @@ namespace TopTenComponent
                 resultNew.Add(pair.Key, pair.Value);
             }
 
-            if (TopTenMadeEvent != null) TopTenMadeEvent("Top Ten Lists created!");
+			var elapsed = StopMethodWatch(methodWatch, methodWatchUnit);
+			var message = String.Format("Top Ten Lists created in {0} {1}!", elapsed, methodWatchUnit);
+			if (TopTenMadeEvent != null) TopTenMadeEvent(message);
+			if (TopTenMadeEvent2 != null) TopTenMadeEvent2(message, elapsed);
             return resultNew;
            
 
