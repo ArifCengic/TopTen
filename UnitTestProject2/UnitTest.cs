@@ -59,6 +59,14 @@ namespace UnitTestProject
             NUnit.Framework.Assert.AreEqual(result["danas"], 2);
         }
 
+        [TestMethod]
+        public void Test_getWordListFromTextsminValidWordLenght()
+        {
+            tt.minValidWordLenght = 4;
+            var result = tt.getWordListFromTexts(new List<String> { "test jedan dva tri pet cetiri il ak ev" }); ;
+            NUnit.Framework.Assert.AreEqual(result[0].Count, 3);
+        }
+
         //some comment
         [TestMethod]
         public void Test_getWordCountsUppercase()

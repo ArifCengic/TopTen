@@ -13,12 +13,13 @@ namespace TopTenComponent
 
         //all HTML markers are constrained with <>
         const string HTML_TAG_PATTERN = "<.*?>";
-        const int minlen = 3;
+        public int minValidWordLenght = 3;
         public List<string> blackList = new List<string>(new string[]{"a", "o", "i", "u", "ako", "zbog",
         "ja", "mi", "moj", "naš", "ovaj", "ovakav", "ko", "koji", "neko", "nekakav", "niko", "ničiji",
             "svako","od", "do", "k", "uz",  "ili", "jer", "ali", "ili", "te", });
         public char[] delimiters = new char[] { ' ', ',', '.', ':', '\t', '\\', '=', '/', '\r', '\n', '{', '}', '[', ']' };
         public bool NamesOnly = false;
+        public int limitWordsPerWebSite = 20;       
 
         public Func<string, bool> HtmlDownloaded;
 
@@ -128,7 +129,7 @@ namespace TopTenComponent
 
 
                 //TODO put back in
-                words.RemoveAll(x => x.Length < minlen);
+                words.RemoveAll(x => x.Length < minValidWordLenght);
                 words.RemoveAll(x => x.StartsWith("google"));
                 words.RemoveAll(x => x.StartsWith("var"));
                 words.RemoveAll(x => x.StartsWith("this"));
