@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using TopTen;
 using System.Text.RegularExpressions;
-
+using System.Diagnostics;
 
 namespace TopTenComponent
 {
@@ -31,6 +31,35 @@ namespace TopTenComponent
         public delegate bool TopTenMade(string msg);
         public event TopTenMade TopTenMadeEvent;
 
+		public enum WatchUnit
+		{
+			Milliseconds,
+			Ticks
+		}
+		public WatchUnit methodWatchUnit = WatchUnit.Milliseconds;
+		public Stopwatch methodWatch = null;
+		public Stopwatch StartMethodWatch()
+		{
+			return Stopwatch.StartNew();
+		}
+		public long StopMethodWatch(Stopwatch watch, WatchUnit watchUnit)
+		{
+			watch.Stop();
+			long result;
+			switch (watchUnit)
+			{
+				case WatchUnit.Ticks:
+					result = watch.ElapsedTicks;
+					break;
+				case WatchUnit.Milliseconds:
+				default:
+					result = watch.ElapsedMilliseconds;
+					break;					
+			}
+
+			return result;
+		}
+
         public List<String> getHtmlFromUrls(List<Uri> webSites)
         {
             const string noHTML = "NO_HTML";
@@ -39,17 +68,24 @@ namespace TopTenComponent
 
             foreach (Uri webURI in webSites)
             {
-                try
-                {
-                    WebClient wc = new WebClient();
-                    string html = wc.DownloadString(webURI);
-                    if(String.IsNullOrEmpty(html)) htmlList.Add(noHTML);
-                    else htmlList.Add(html);
-                }
-                catch (Exception e)
-                {
-                    throw new System.UriFormatException("InvalidUriFormat :" + e.Message);
-                }
+				methodWatch = StartMethodWatch();
+				try
+				{
+					WebClient wc = new WebClient();
+					string html = wc.DownloadString(webURI);
+					if (String.IsNullOrEmpty(html)) htmlList.Add(noHTML);
+					else htmlList.Add(html);
+				}
+				catch (Exception e)
+				{
+					throw new System.UriFormatException("InvalidUriFormat :" + e.Message);
+				}
+				finally
+				{
+					var elapsed = StopMethodWatch(methodWatch, methodWatchUnit);
+					var message = String.Format("Downloaded {0} in {1} {2}", webURI.ToString(), elapsed, methodWatchUnit);
+					if (HtmlDownloaded != null) HtmlDownloaded(message);
+				}
             }
             if (HtmlDownloaded != null) HtmlDownloaded("Downloaded some web sites");
             return htmlList;
@@ -62,8 +98,12 @@ namespace TopTenComponent
             List<String> withoutHTMLs = new List<String>();
             foreach (String s in htmls)
             {
+				methodWatch = StartMethodWatch();
                 String a = Regex.Replace(s, HTML_TAG_PATTERN, string.Empty);
                 withoutHTMLs.Add(a);
+				var elapsed = StopMethodWatch(methodWatch, methodWatchUnit);
+				string message = String.Format("Removed HTML from string in {0} {1}", elapsed, methodWatchUnit);
+				if (HtmlRemovedEvent != null) HtmlRemovedEvent(message);
             }
 
             if (HtmlRemovedEvent != null) HtmlRemovedEvent(String.Format("All HTML tags removed. {0} script tags removed", 7));
@@ -187,11 +227,12 @@ namespace TopTenComponent
             //TODO TestCases DZenita
             // return new Dictionary<String, int> { { "Danas", 2 }, { "dan", 1 } };
             watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
+			var elapsedMs = watch.ElapsedMilliseconds;
             if (WordCountsCalculated != null) WordCountsCalculated(String.Format("Word Counts were calculated in {0} milliseconds.", elapsedMs));
             if (WordCountsCalculated2 != null) WordCountsCalculated2("Word Counts were calculated.", elapsedMs);
 			return results;
 		}
+
 		public Dictionary<String, int> makeTop10s(List<Dictionary<String, int>> top10Liste)
 		{
 
