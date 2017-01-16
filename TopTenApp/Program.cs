@@ -15,6 +15,11 @@ namespace TopTenApp
             Console.WriteLine(msg);
             return true;
         }
+        public static bool ShowMessageWithLong(string msg, long val)
+        {
+            Console.WriteLine(String.Format("Message: {0}, value {1}", msg, val));
+            return true;
+        }
         public static void Main(string[] args)
 		{
 			Console.WriteLine("Application  Started");
@@ -51,6 +56,7 @@ namespace TopTenApp
                 tt.HtmlRemovedEvent += ShowMessage;
                 tt.WordListCreated = ShowMessage;
                 tt.WordCountsCalculated = ShowMessage;
+                tt.WordCountsCalculated2 = ShowMessageWithLong;
                 tt.TopTenMadeEvent += ShowMessage;
 
                 var res1 = tt.getHtmlFromUrls(listUri);

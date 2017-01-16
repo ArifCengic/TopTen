@@ -27,6 +27,7 @@ namespace TopTenComponent
 
         public Func<string, bool> WordListCreated;
         public Func<string, bool> WordCountsCalculated;
+        public Func<string, long, bool> WordCountsCalculated2;
         public delegate bool TopTenMade(string msg);
         public event TopTenMade TopTenMadeEvent;
 
@@ -137,7 +138,9 @@ namespace TopTenComponent
 
 		public Dictionary<string, int> getWordCounts(List<string> rijeci)
 		{
-			/*
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            /*
 			 * v1 code
 			Dictionary<string, int> results = new Dictionary<string, int>();
 			foreach (string s in rijeci)
@@ -153,8 +156,8 @@ namespace TopTenComponent
 			}
 			*/
 
-			// should be case-insensitive now
-			var results = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
+            // should be case-insensitive now
+            var results = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
 			foreach (string s in rijeci)
 			{
 
@@ -183,7 +186,10 @@ namespace TopTenComponent
             //TODO Denis
             //TODO TestCases DZenita
             // return new Dictionary<String, int> { { "Danas", 2 }, { "dan", 1 } };
-            if (WordCountsCalculated != null) WordCountsCalculated("Word Counts were calculated.");
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            if (WordCountsCalculated != null) WordCountsCalculated(String.Format("Word Counts were calculated in {0} milliseconds.", elapsedMs));
+            if (WordCountsCalculated2 != null) WordCountsCalculated2("Word Counts were calculated.", elapsedMs);
 			return results;
 		}
 		public Dictionary<String, int> makeTop10s(List<Dictionary<String, int>> top10Liste)
