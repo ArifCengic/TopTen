@@ -65,7 +65,8 @@ namespace UnitTestProject
         {
             tt.NamesOnly = true;
             var result = tt.getWordCounts(new List<String> { "Jack", "danas", "Jim", "danas", "Jim" });
-            NUnit.Framework.Assert.AreEqual(result["danas"], null);
+
+            NUnit.Framework.Assert.AreEqual(result.ContainsKey("danas"), false);
         }
 
        
