@@ -171,7 +171,7 @@ namespace TopTenComponent
                     continue;
                 }
 
-                if (NamesOnly && !char.IsUpper(s[0]))
+                if (NamesOnly && !s.startsWithUppercase())
                 {
                     continue;
                 }

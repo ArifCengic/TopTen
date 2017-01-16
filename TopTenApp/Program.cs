@@ -52,6 +52,7 @@ namespace TopTenApp
                 if (listUri.Count == 0) throw new Exception("No valid web urls. Check your command line params");
 
                 TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
+                tt.NamesOnly = false;
                 tt.HtmlDownloaded = ShowMessage;
                 tt.HtmlRemovedEvent += ShowMessage;
                 tt.WordListCreated = ShowMessage;
