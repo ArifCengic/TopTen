@@ -21,7 +21,22 @@ namespace TopTenApp
 			//var logResults = LoadTopTen();
             try
             {
-                var listUri = new List<Uri>();
+                using (var cntx = new UserDBEntities())
+                {
+                    var user = new User();
+                    user.Email = "cengica@hotmail.com";
+                    user.LastLogin = DateTime.Now;
+                    user.UserName = "test";
+                    user.Password = "test";
+                    var u = cntx.Users.FirstOrDefault(x => x.UserName == "test");
+                    if (u == null)
+                    {
+                        cntx.Users.Add(user);
+                        cntx.SaveChanges();
+                    }
+                    else u.LastLogin = DateTime.Now;
+                }
+                    var listUri = new List<Uri>();
 
                 for (int i = 0; i < args.Length; i++)
                 {

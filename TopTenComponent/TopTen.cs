@@ -54,25 +54,19 @@ namespace TopTenComponent
             // Uzeti listu htmls remove all tags
             // if "NO_HTML" return empty string
             List<String> withoutHTMLs = new List<String>();
+            int count = 0;
             foreach (String s in htmls)
             {
                 String a = Regex.Replace(s, HTML_TAG_PATTERN, string.Empty);
                 withoutHTMLs.Add(a);
+                if (HtmlRemovedEvent != null) HtmlRemovedEvent(String.Format("All HTML tags removed for {0} web site ", ++count));
             }
 
-            if (HtmlRemovedEvent != null) HtmlRemovedEvent(String.Format("All HTML tags removed. {0} script tags removed", 7));
             return withoutHTMLs;
         }
 
         public List<List<string>> getWordListFromTexts(List<string> texts)
         {
-
-            //TODO Senad
-            //TestCase Denis
-            // Uzeti text pretvoriti ga u listu rijeci
-            // Kreirati metod koji ce Izbrisati rijeci krace od 3 slova
-            // Kreirati metod koji ce izbaciti rijeci koje sadrze broj
-
             List<List<String>> rezultat = new List<List<string>>();
             foreach (String text in texts)
             {
@@ -80,8 +74,7 @@ namespace TopTenComponent
                            text.Split(delimiters,
                            StringSplitOptions.RemoveEmptyEntries));
 
-
-                //TODO put back in
+                //TO DO Add StartsWithBlackList List<string>
                 words.RemoveAll(x => x.Length < minlen);
                 words.RemoveAll(x => x.StartsWith("google"));
                 words.RemoveAll(x => x.StartsWith("var"));
@@ -92,62 +85,16 @@ namespace TopTenComponent
                 words.RemoveAll(x => x.StartsWith("exp"));
                 words.RemoveAll(x => x.StartsWith("doc"));
                 words.RemoveAll(x => x.StartsWith("perf"));
-               
-
                 rezultat.Add(words);
             }
-
-
 
             return rezultat;
 		}
 
 
-
-		public bool test_getWordListFromTexts()
-		{
-			var testData = new List<String> { "Danas", "je", "lijep", "dan" };
-			var methodData = getWordListFromTexts(new List<string> { "Danas je lijep dan" })[0];
-
-			return testData.SequenceEqual(methodData);
-
-			/*
-			 *  Manual comparing
-			int wordCount = testData.Count;
-			if (wordCount != methodData.Count)
-			{
-				return false;
-			}
-			for (int i = 0; i < wordCount; i++)
-			{
-				if ( testData[i] != methodData[i])
-				{
-					return false;
-				}
-			}
-			return true; ;
-			*/
-
-		}
-
 		public Dictionary<string, int> getWordCounts(List<string> rijeci)
 		{
-			/*
-			 * v1 code
-			Dictionary<string, int> results = new Dictionary<string, int>();
-			foreach (string s in rijeci)
-			{
-				if (results.ContainsKey(s))
-				{
-					results[s] += 1;
-				}
-				else
-				{
-					results[s] = 1;
-				}            
-			}
-			*/
-
+			
 			// should be case-insensitive now
 			var results = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
 			foreach (string s in rijeci)
@@ -162,9 +109,6 @@ namespace TopTenComponent
 				results[s] = currentCount;
 			}
 
-			//TODO Denis
-			//TODO TestCases DZenita
-			// return new Dictionary<String, int> { { "Danas", 2 }, { "dan", 1 } };
 			return results;
 		}
 		public Dictionary<String, int> makeTop10s(List<Dictionary<String, int>> top10Liste)
@@ -180,7 +124,8 @@ namespace TopTenComponent
                     else result.Add(item.Key, item.Value);
                 }
             }
-
+           
+           //Sort Dictionary
            Dictionary<String, int> resultNew = new Dictionary<String, int>();
 
            foreach (KeyValuePair<String, int> pair in result.OrderByDescending(key => key.Value))
@@ -189,9 +134,6 @@ namespace TopTenComponent
             }
 
             return resultNew;
-           
-
-
         }
     } 
 }
