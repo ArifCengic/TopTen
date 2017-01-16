@@ -19,6 +19,7 @@ namespace TopTenComponent
             "svako","od", "do", "k", "uz",  "ili", "jer", "ali", "ili", "te", });
         public char[] delimiters = new char[] { ' ', ',', '.', ':', '\t', '\\', '=', '/', '\r', '\n', '{', '}', '[', ']' };
         public bool NamesOnly = false;
+        public int limitWordsPerWebSite = 20;       
 
         public Func<string, bool> HtmlDownloaded;
 
