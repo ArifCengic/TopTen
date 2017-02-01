@@ -54,8 +54,18 @@ namespace WindowsFormsApplication1
                 }
 
                 if (listUri.Count == 0) throw new Exception("No valid web urls. Check your command line params" + "\n");
-
+               
                 TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
+
+                //Subscribe to events 
+                listBox1.Items.Clear();
+                tt.HtmlDownloadedEvent += Tt_HtmlRemovedEvent;
+                tt.HtmlRemovedEvent += Tt_HtmlRemovedEvent;
+               // tt.HtmlRemovedEvent2 += Tt_HtmlRemovedEvent2;
+               //tt.TopTenMadeEvent2 += Tt_HtmlRemovedEvent2;
+                tt.WordCountCalculatedEvent += Tt_HtmlRemovedEvent;
+                tt.TopTenMadeEvent += Tt_HtmlRemovedEvent;
+
 
                 var res1 = tt.getHtmlFromUrls(listUri);
                 var res2 = tt.removeHTMLs(res1);
@@ -105,6 +115,18 @@ namespace WindowsFormsApplication1
 
 
             
+        }
+
+        private bool Tt_HtmlRemovedEvent(string msg)
+        {
+            listBox1.Items.Add(msg);
+            return true;
+        }
+
+        private bool Tt_HtmlRemovedEvent2(string msg, long val)
+        {
+            listBox1.Items.Add(string.Format("{0} - {1} ms", msg, val));
+            return true;
         }
 
         private void button2_Click(object sender, System.EventArgs e)

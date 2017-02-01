@@ -68,11 +68,11 @@ namespace TopTenApp
 
                 TopTenComponent.TopTen tt = new TopTenComponent.TopTen();
                 tt.NamesOnly = false;
-                tt.HtmlDownloaded = ShowMessage;
+                tt.HtmlDownloadedEvent += ShowMessage;
                 tt.HtmlRemovedEvent += ShowMessage;
-                tt.WordListCreated = ShowMessage;
-                tt.WordCountsCalculated = ShowMessage;
-                tt.WordCountsCalculated2 = ShowMessageWithLong;
+                tt.WordListCreatedEvent += ShowMessage;
+                tt.WordCountCalculatedEvent += ShowMessage;
+                //tt.WordCountsCalculated2 += ShowMessageWithLong;
                 tt.TopTenMadeEvent += ShowMessage;
 				tt.TopTenMadeEvent2 += ShowMessageWithLong;
 
